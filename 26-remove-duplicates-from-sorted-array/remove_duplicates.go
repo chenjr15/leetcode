@@ -1,31 +1,22 @@
 package leetcode26
 
-//remove the duplicates in sorted array
+// remove the duplicates in sorted array
+// Tow Pointers , low for unique, high for all item
 func removeDuplicates(nums []int) int {
-	count := len(nums)
-	if len(nums) == 1 {
-		return 1
+	if len(nums) < 2 {
+		return len(nums)
 
 	}
-	for i := 0; i < count-1; {
-		if nums[i] == nums[i+1] {
-			nextdiff := i + 2
-			for nextdiff < count {
-				if nums[i] != nums[nextdiff] {
-					break
-				}
-				nextdiff++
-			}
-			copy(nums[i+1:], nums[nextdiff:])
-			i = i + 1
-			count = count - (nextdiff - i)
-
-		} else {
-			i++
+	low := 0
+	high := 1
+	for high < len(nums) {
+		if nums[low] != nums[high] {
+			low++
+			nums[low] = nums[high]
 
 		}
+		high++
 
 	}
-	return count
-
+	return low + 1
 }
