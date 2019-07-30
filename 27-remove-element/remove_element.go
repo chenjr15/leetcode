@@ -5,7 +5,7 @@ package leetcode27
  * remove all instances of that value in-place
  * and return the new length.
  * Solution: use two pointers, fast ponter to travel all elements.
- * Once found value different from specify val,
+ * Once found value different from specific val,
  * copy the value in fast to slow pointer position and increase slow.
  * Finally, return the value of slow pointer.
  */
@@ -17,6 +17,7 @@ func removeElement(nums []int, val int) int {
 			nums[slow] = nums[fast]
 			slow++
 		}
+
 	}
 	return slow
 
