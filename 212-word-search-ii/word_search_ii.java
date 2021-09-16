@@ -1,4 +1,4 @@
-class Solution {
+ class Solution {
     Trie tree;
     String[] words;
     char[][] board;
@@ -28,7 +28,6 @@ class Solution {
                 if(result.size()>= words.length){
                     break;
                 }
-
             }
         }
         return result;
@@ -54,7 +53,7 @@ class Solution {
         if(cur!=null){
             if(cur.word!=null){
                 this.result.add(cur.word);
-                // 单词匹配到要记得删掉，防止重复匹配
+                // 单词用完要记得删掉，防止重复匹配
                 cur.word=null;
             }
             visited[i][j] = true;
@@ -82,6 +81,7 @@ class Solution {
 class Trie {
     char c;
     Trie[]  children;
+    int cnt = 0;
     String word;
     List<Trie> path;
     Trie cur;
@@ -115,8 +115,22 @@ class Trie {
             return;
         }
         if(this.path.size()>1){
+            Trie parent = this.path.get(this.path.size()-2);
+            
+            if(this.cur.cnt==0){
+                //删掉当前子树中的当前单词
+                for(int i = this.path.size()-2;i>0;--i){
+                    Trie son = this.path.get(i+1);
+                    if(son.cnt == 0){
+                        path.get(i).children[son.c-'a'] = null;
+                    }else{
+                        break;
+                    }
+                }
+                
+            }
             this.path.remove(this.path.size()-1);
-            this.cur = this.path.get(this.path.size()-1);
+            this.cur = parent;
         }else{
             this.path.remove(0);
             this.cur = this;
@@ -133,47 +147,13 @@ class Trie {
             if(cur.children[ci]==null){
                 // 插入新节点
                 cur.children[ci] = new Trie(word.charAt(i));
+                cur.cnt++;
             }
             cur = cur.children[ci];
         }
         cur.word = word;
 
     }
-    
-    public String toString(){
-        return  ""+this.c;
-    }
 
-    // /** Returns if the word is in the trie. */
-    // public boolean search(String word) {
-    //     Trie cur = this;
-    //     int ci;
-
-    //     for(int i = 0;i<word.length();i++){
-    //         ci = word.charAt(i)-'a';
-    //         if(cur.children[ci]==null){
-    //             return false;
-    //         }
-    //         cur = cur.children[ci];
-    //     }
-    //     return cur.wordEnd;
-
-    // }
-
-    // /** Returns if there is any word in the trie that starts with the given prefix. */
-    // public boolean startsWith(String prefix) {
-    //      Trie cur = this;
-    //     int ci;
-
-    //     for(int i = 0;i<prefix.length();i++){
-    //         ci = prefix.charAt(i)-'a';
-    //         if(cur.children[ci]==null){
-    //             return false;
-    //         }
-    //         cur = cur.children[ci];
-    //     }
-    //     return true;
-
-    // }
 }
 
