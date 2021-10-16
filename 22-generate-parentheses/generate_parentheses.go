@@ -10,21 +10,29 @@ func main() {
 }
 func generateParenthesis(n int) []string {
 	// `left` and `right` means the left and right parentheses that could be used
+	// left must be placed before right
 	var result = make([]string, 0)
-	var addParentheses func(inProgress string, left int, right int)
-	addParentheses = func(inProgress string, left int, right int) {
+	seq := make([]byte, n+n)
+	var addParentheses func(left int, right int)
+	addParentheses = func(left int, right int) {
 		if right == 0 {
 			// all closed , time to return
-			result = append(result, inProgress)
+			result = append(result, string(seq))
 		}
+		// first place left
 		if left != 0 {
-			addParentheses(inProgress+"(", left-1, right)
+			seq[n+n-left-right] = '('
+			addParentheses(left-1, right)
 		}
+		// at the first time, right equals left, this branch will not enter yet.
+		// after enter the branch above(which insert left), the right remains more than left,
+		// we can insert right now
 		if right > left {
-			addParentheses(inProgress+")", left, right-1)
+			seq[n+n-left-right] = ')'
+			addParentheses(left, right-1)
 		}
 	}
-	addParentheses("", n, n)
+	addParentheses(n, n)
 	return result
 
 }
